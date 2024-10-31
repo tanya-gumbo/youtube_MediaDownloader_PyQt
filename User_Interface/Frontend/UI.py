@@ -18,8 +18,6 @@ class MainWindow(QWidget):
         self.media_format = ""
         self.status_menu = QListWidget()
         self.video_title = ""
-        self.progress_bar = QProgressBar()
-        self.status_label = QLabel("Waiting for download...")
         self.define_ui()
 
     def define_ui(self):
@@ -45,6 +43,7 @@ class MainWindow(QWidget):
         # add checkboxes and download button to main layout
         self.checkbox_buttons_box.addWidget(self.mp3_checkbox)
         self.checkbox_buttons_box.addWidget(self.mp4_checkbox)
+        self.download_button.clicked.connect(self.download_button_clicked)
         self.checkbox_buttons_box.addWidget(self.download_button)
         self.main_layout.addLayout(self.checkbox_buttons_box)
 
@@ -63,13 +62,20 @@ class MainWindow(QWidget):
     def download_button_clicked(self):
         """Executes the download thread when the download button is clicked"""
         youtube_link = self.youtube_link_entry.text()
-        if len(youtube_link) is 0:
-            return
+        try:
+            self.add_status_menu_items()
+        except Exception as e:
+            print(e)
+        '''if len(youtube_link) is 0:
+            return'''
 
 
     def add_status_menu_items(self):
         """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
-        item = CustomStatusMenuItems(self.progress_bar)
+        status_label = QLabel()
+        progress_bar = QProgressBar()
+        status_label.setText("Waiting for download...")
+        item = CustomStatusMenuItems(progress_bar, status_label)
         self.status_menu.addItem(item)
         self.status_menu.setItemWidget(item, item.widget)
 
@@ -81,14 +87,18 @@ class MainWindow(QWidget):
         """Adds the status menu and its components to the main window"""
         self.main_layout.addWidget(self.status_menu)
 
+
 class CustomStatusMenuItems(QListWidgetItem):
-    def __init__(self, progress_bar, status_label):
+    def __init__(self, default_progress_bar, default_status_label):
         super().__init__()
-        progress_bar = progress_bar
-        status_label = status_label
+        progress_bar = default_progress_bar
+        progress_bar.setValue(25)
+        status_label = default_status_label
+
         self.layout = QVBoxLayout()
         self.layout.addWidget(progress_bar)
         self.layout.addWidget(status_label)
+
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
