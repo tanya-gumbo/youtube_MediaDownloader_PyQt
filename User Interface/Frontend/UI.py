@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QListWidgetItem
+
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -18,4 +19,8 @@ class MainWindow(QWidget):
     def update_progress_bar(self):
         """Updates the progress bar of the download"""
         pass
+
+class CustomStatusMenuItems(QListWidgetItem):
+    def __init__(self):
+        super().__init__()
 
