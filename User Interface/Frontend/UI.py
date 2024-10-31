@@ -5,6 +5,9 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
+    def define_ui(self):
+        """Defines the UI which will be displayed to the user"""
+
     def checkbox_clicked(self):
         """Ensures the checkboxes remain exclusive and updates the format variable"""
 
