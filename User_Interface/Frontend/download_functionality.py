@@ -15,6 +15,15 @@ class VideoDownloader(QThread):
         self.create_download_folder()
 
 
+    def get_video_title(self):
+        try:
+            with yt_dlp.YoutubeDL() as ydl:
+                info = ydl.extract_info(self.download_link, download=False)
+                video_title = info.get('title', 'Unknown')
+                return video_title
+        except Exception as e:
+            return f"Error: {e}"
+
     def run(self):
         """Download the video as a mp4"""
         file_path = self.default_download_folder_path
@@ -33,10 +42,11 @@ class VideoDownloader(QThread):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             try:
                 info = ydl.extract_info(self.download_link, download=True)
-                video_title = info.get('title', 'Unknown')
-                self.download_finished.emit(video_title)
+                # video_title = info.get('title', 'Unknown')
+                # self.download_finished.emit(video_title)
             except Exception as e:
                 self.download_finished.emit(f"Error: {e}")
+
 
     def download_progress_hook(self, d):
         if d['status'] == 'downloading':
