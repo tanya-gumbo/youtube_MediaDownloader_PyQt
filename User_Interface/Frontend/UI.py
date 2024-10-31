@@ -1,6 +1,7 @@
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
     QCheckBox, QButtonGroup, QListWidget
+from click import progressbar
 
 
 class MainWindow(QWidget):
@@ -16,6 +17,7 @@ class MainWindow(QWidget):
         self.download_button = QPushButton("Download")
         self.media_format = ""
         self.status_menu = QListWidget()
+        self.video_title = ""
         self.define_ui()
 
     def define_ui(self):
@@ -58,7 +60,12 @@ class MainWindow(QWidget):
 
     def download_button_clicked(self):
         """Executes the download thread when the download button is clicked"""
-        pass
+        youtube_link = self.youtube_link_entry.text()
+        if len(youtube_link) is 0:
+            return
+
+
+
 
     def add_status_menu_items(self):
         """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
@@ -72,6 +79,14 @@ class MainWindow(QWidget):
         self.main_layout.addWidget(self.status_menu)
 
 class CustomStatusMenuItems(QListWidgetItem):
-    def __init__(self):
+    def __init__(self, progress_bar):
         super().__init__()
+        progress_bar = progress_bar
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(progress_bar)
+        self.widget = QWidget()
+        self.widget.setLayout(self.layout)
+        self.setSizeHint(self.widget.sizeHint())
+
+
 
