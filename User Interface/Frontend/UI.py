@@ -6,7 +6,7 @@ class MainWindow(QWidget):
         super().__init__()
 
     def define_ui(self):
-        """Defines the UI which will be displayed to the user"""
+        """Defines the core UI which will be displayed to the user"""
 
     def checkbox_clicked(self):
         """Ensures the checkboxes remain exclusive and updates the format variable"""
@@ -22,6 +22,9 @@ class MainWindow(QWidget):
     def update_progress_bar(self):
         """Updates the progress bar of the download"""
         pass
+
+    def add_status_menu(self):
+        """Adds the status menu and its components to the main window"""
 
 class CustomStatusMenuItems(QListWidgetItem):
     def __init__(self):
