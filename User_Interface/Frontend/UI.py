@@ -67,8 +67,8 @@ class MainWindow(QWidget):
         if len(youtube_link) is 0:
             return
         self.download_thread = VideoDownloader(youtube_link, self.media_format)
+        self.download_thread.download_started.connect(item.handle_download_started)
         self.download_thread.progress_updated.connect(item.update_progress_bar)
-        self.download_thread.download_finished.connect(item.handle_download_finished)
         self.download_thread.start()
 
 
@@ -92,10 +92,12 @@ class MainWindow(QWidget):
 class CustomStatusMenuItems(QListWidgetItem):
     def __init__(self, default_progress_bar, default_status_label):
         super().__init__()
+        self.video_title = ""
         self.progress_bar = default_progress_bar
         self.status_label = default_status_label
 
         self.layout = QVBoxLayout()
+        self.layout.addWidget(self.video_title)
         self.layout.addWidget(self.progress_bar)
         self.layout.addWidget(self.status_label)
 
@@ -103,10 +105,12 @@ class CustomStatusMenuItems(QListWidgetItem):
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
 
+
+    def handle_download_started(self, result):
+        self.status_label.setText(result)
+
+
     def update_progress_bar(self, progress):
         """Updates the progress bar of the download"""
         self.progress_bar.setValue(progress)
         self.status_label.setText(f"Downloading... - {progress}%")
-
-    def handle_download_finished(self, result):
-        self.status_label.setText(result)
