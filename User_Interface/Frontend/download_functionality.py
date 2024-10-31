@@ -42,8 +42,7 @@ class VideoDownloader(QThread):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             try:
                 info = ydl.extract_info(self.download_link, download=True)
-                # video_title = info.get('title', 'Unknown')
-                # self.download_finished.emit(video_title)
+                self.download_finished.emit("Downloaded successfully")
             except Exception as e:
                 self.download_finished.emit(f"Error: {e}")
 
