@@ -82,17 +82,6 @@ class MainWindow(QWidget):
         self.status_menu.setItemWidget(item, item.widget)
         return item
 
-    def update_progress_bar(self):
-        """Updates the progress bar of the download"""
-        download_item = self.add_status_menu_items()
-        progress_bar = download_item.progress_bar
-        progress_bar.setValue(progress)
-        status_label = download_item.status_label
-        status_label.setText(f"Downloading... - {progress}%")
-
-    def handle_download_finished(self, result):
-        self.status_label.setText(result)
-
     def add_status_menu(self):
         """Adds the status menu and its components to the main window"""
         self.main_layout.addWidget(self.status_menu)
@@ -113,3 +102,11 @@ class CustomStatusMenuItems(QListWidgetItem):
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
+
+    def update_progress_bar(self):
+        """Updates the progress bar of the download"""
+        progress_bar.setValue(progress)
+        status_label.setText(f"Downloading... - {progress}%")
+
+    def handle_download_finished(self, result):
+        self.status_label.setText(result)
