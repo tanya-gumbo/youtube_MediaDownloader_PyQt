@@ -63,13 +63,13 @@ class MainWindow(QWidget):
     def download_button_clicked(self):
         """Executes the download thread when the download button is clicked"""
         youtube_link = self.youtube_link_entry.text()
-        self.add_status_menu_items()
+        item = self.add_status_menu_items()
         if len(youtube_link) is 0:
             return
-        '''self.download_thread = VideoDownloader(youtube_link, self.media_format)
-        self.download_thread.progress_updated.connect(self.update_progress_bar)
-        self.download_thread.download_finished.connect(self.handle_download_finished)
-        self.download_thread.start()'''
+        self.download_thread = VideoDownloader(youtube_link, self.media_format)
+        self.download_thread.progress_updated.connect(item.update_progress_bar)
+        self.download_thread.download_finished.connect(item.handle_download_finished)
+        self.download_thread.start()
 
 
     def add_status_menu_items(self):
@@ -103,10 +103,10 @@ class CustomStatusMenuItems(QListWidgetItem):
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
 
-    def update_progress_bar(self):
+    def update_progress_bar(self, progress):
         """Updates the progress bar of the download"""
-        progress_bar.setValue(progress)
-        status_label.setText(f"Downloading... - {progress}%")
+        self.progress_bar.setValue(progress)
+        self.status_label.setText(f"Downloading... - {progress}%")
 
     def handle_download_finished(self, result):
         self.status_label.setText(result)
