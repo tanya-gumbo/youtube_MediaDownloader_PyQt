@@ -2,6 +2,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
     QCheckBox, QButtonGroup, QListWidget, QProgressBar
 from click import progressbar
+from User_Interface.Frontend.download_functionality import VideoDownloader
 
 
 class MainWindow(QWidget):
@@ -62,12 +63,13 @@ class MainWindow(QWidget):
     def download_button_clicked(self):
         """Executes the download thread when the download button is clicked"""
         youtube_link = self.youtube_link_entry.text()
-        try:
-            self.add_status_menu_items()
-        except Exception as e:
-            print(e)
-        '''if len(youtube_link) is 0:
-            return'''
+        self.add_status_menu_items()
+        if len(youtube_link) is 0:
+            return
+        '''self.download_thread = VideoDownloader(youtube_link, self.media_format)
+        self.download_thread.progress_updated.connect(self.update_progress_bar)
+        self.download_thread.download_finished.connect(self.handle_download_finished)
+        self.download_thread.start()'''
 
 
     def add_status_menu_items(self):
@@ -78,30 +80,36 @@ class MainWindow(QWidget):
         item = CustomStatusMenuItems(progress_bar, status_label)
         self.status_menu.addItem(item)
         self.status_menu.setItemWidget(item, item.widget)
+        return item
 
     def update_progress_bar(self):
         """Updates the progress bar of the download"""
-        pass
+        download_item = self.add_status_menu_items()
+        progress_bar = download_item.progress_bar
+        progress_bar.setValue(progress)
+        status_label = download_item.status_label
+        status_label.setText(f"Downloading... - {progress}%")
+
+    def handle_download_finished(self, result):
+        self.status_label.setText(result)
 
     def add_status_menu(self):
         """Adds the status menu and its components to the main window"""
         self.main_layout.addWidget(self.status_menu)
 
 
+
+
 class CustomStatusMenuItems(QListWidgetItem):
     def __init__(self, default_progress_bar, default_status_label):
         super().__init__()
-        progress_bar = default_progress_bar
-        progress_bar.setValue(25)
-        status_label = default_status_label
+        self.progress_bar = default_progress_bar
+        self.status_label = default_status_label
 
         self.layout = QVBoxLayout()
-        self.layout.addWidget(progress_bar)
-        self.layout.addWidget(status_label)
+        self.layout.addWidget(self.progress_bar)
+        self.layout.addWidget(self.status_label)
 
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
-
-
-
