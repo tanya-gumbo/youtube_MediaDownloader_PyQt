@@ -1,12 +1,21 @@
-from PyQt6.QtWidgets import QWidget, QListWidgetItem
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout
 
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
+        self.youtube_link_entry = QLineEdit()
+        self.link_Label = QLabel("")
+        self.download_button = QPushButton("Download")
+        self.define_ui()
 
     def define_ui(self):
         """Defines the core UI which will be displayed to the user"""
+        self.setWindowTitle("Youtube Downloader")
+        self.setWindowIcon(QIcon("User_Interface/Frontend/download_icon.png"))
+        self.setGeometry(100, 100, 400, 300)
+
 
     def checkbox_clicked(self):
         """Ensures the checkboxes remain exclusive and updates the format variable"""
@@ -16,7 +25,7 @@ class MainWindow(QWidget):
         pass
 
     def add_status_menu_items(self):
-        """Adds the media name and the progress bar to the QListWidget in the main window"""
+        """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
         pass
 
     def update_progress_bar(self):
