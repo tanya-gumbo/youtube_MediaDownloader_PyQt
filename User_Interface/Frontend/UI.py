@@ -1,6 +1,6 @@
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
-    QCheckBox, QButtonGroup, QListWidget
+    QCheckBox, QButtonGroup, QListWidget, QProgressBar
 from click import progressbar
 
 
@@ -18,6 +18,8 @@ class MainWindow(QWidget):
         self.media_format = ""
         self.status_menu = QListWidget()
         self.video_title = ""
+        self.progress_bar = QProgressBar()
+        self.status_label = QLabel("Waiting for download...")
         self.define_ui()
 
     def define_ui(self):
@@ -65,10 +67,11 @@ class MainWindow(QWidget):
             return
 
 
-
-
     def add_status_menu_items(self):
         """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
+        item = CustomStatusMenuItems(self.progress_bar)
+        self.status_menu.addItem(item)
+        self.status_menu.setItemWidget(item, item.widget)
 
     def update_progress_bar(self):
         """Updates the progress bar of the download"""
@@ -79,11 +82,13 @@ class MainWindow(QWidget):
         self.main_layout.addWidget(self.status_menu)
 
 class CustomStatusMenuItems(QListWidgetItem):
-    def __init__(self, progress_bar):
+    def __init__(self, progress_bar, status_label):
         super().__init__()
         progress_bar = progress_bar
+        status_label = status_label
         self.layout = QVBoxLayout()
         self.layout.addWidget(progress_bar)
+        self.layout.addWidget(status_label)
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
         self.setSizeHint(self.widget.sizeHint())
