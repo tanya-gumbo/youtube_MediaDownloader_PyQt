@@ -1,13 +1,13 @@
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
-    QCheckBox, QButtonGroup, QListWidget, QProgressBar
+    QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow
 from click import progressbar
 from pytube.extract import video_id
 
 from User_Interface.Frontend.download_functionality import VideoDownloader
 
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.main_layout = QVBoxLayout(self)
@@ -28,7 +28,11 @@ class MainWindow(QWidget):
         self.setWindowTitle("Youtube Downloader")
         self.setWindowIcon(QIcon("User_Interface/Frontend/download_icon.png"))
         self.setGeometry(100, 100, 400, 300)
-        self.setLayout(self.main_layout)
+
+        # Create the central widget and set the layout
+        central_widget = QWidget()
+        central_widget.setLayout(self.main_layout)
+        self.setCentralWidget(central_widget)
 
         # Add entry label and entry point for Youtube link to main layout
         self.youtube_link_entry.resize(30, 60)
@@ -66,8 +70,6 @@ class MainWindow(QWidget):
         """Executes the download thread when the download button is clicked"""
         youtube_link = self.youtube_link_entry.text()
         item = self.add_status_menu_items()
-        if len(youtube_link) is 0:
-            return
         self.download_thread = VideoDownloader(youtube_link, self.media_format)
         title = self.download_thread.get_video_title()
         item.set_video_title(title)
@@ -89,8 +91,6 @@ class MainWindow(QWidget):
     def add_status_menu(self):
         """Adds the status menu and its components to the main window"""
         self.main_layout.addWidget(self.status_menu)
-
-
 
 
 class CustomStatusMenuItems(QListWidgetItem):
