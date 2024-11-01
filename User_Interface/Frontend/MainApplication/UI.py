@@ -108,18 +108,6 @@ class MainWindow(QMainWindow):
         self.download_thread.progress_updated.connect(item.update_progress_bar)
         self.download_thread.start()
 
-    def create_download_folder_on_startup(self):
-        """Creates the download folder on startup if it already doesn't exist"""
-        try:
-            desktop_path = os.path.join(QDir.homePath(), "Desktop")
-            download_folder_name = "VidDownloader1"
-            folder_path = os.path.join(desktop_path, download_folder_name)
-            default_download_folder_path = os.path.abspath(folder_path)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-        except Exception as e:
-            print("Exception is", e)
-
 
 class CustomStatusMenuItems(QListWidgetItem):
     def __init__(self, default_progress_bar, default_status_label):
