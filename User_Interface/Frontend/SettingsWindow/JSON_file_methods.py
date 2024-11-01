@@ -1,8 +1,16 @@
 import json
 
 
-def read_json_file():
+def read_json_file_path():
     """Reads from the settings json file"""
+    try:
+        with open('User_Interface/Frontend/SettingsWindow/app_settings.json', 'r') as file:
+            data = json.load(file)
+            file_path = data['file_path']
+            return file_path
+    except Exception as e:
+        print(e)
+
 
 def update_json_file_path(file_path):
     """Updates data in the settings json file"""
