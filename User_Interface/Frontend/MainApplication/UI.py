@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
         self.main_layout = QVBoxLayout(self)
         self.youtube_link_entry = QLineEdit(self)
         self.link_Label = QLabel("Link Entry")
+        self.download_path = ""
         self.mp3_checkbox = QCheckBox(self)
         self.mp4_checkbox = QCheckBox(self)
         self.checkbox_buttons_box = QHBoxLayout(self)
@@ -76,7 +77,7 @@ class MainWindow(QMainWindow):
         super().showEvent(event)
         if not event.spontaneous():
             folder_creator = Settings()
-            folder_creator.create_download_folder_on_startup()
+            self.download_path = folder_creator.create_download_folder_on_startup()
 
 
 
