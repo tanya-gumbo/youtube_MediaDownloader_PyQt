@@ -37,6 +37,10 @@ class SideBar(QWidget):
 
 
 class Settings:
+    def __init__(self):
+        self.download_path = ""
+        
+
     def create_download_folder_on_startup(self):
         """Creates the download folder on startup if it already doesn't exist"""
         try:
