@@ -1,10 +1,8 @@
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
     QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow
-from click import progressbar
-from pytube.extract import video_id
 
-from User_Interface.Frontend.download_functionality import VideoDownloader
+from User_Interface.Frontend.MainApplication.download_functionality import VideoDownloader
 
 
 class MainWindow(QMainWindow):
