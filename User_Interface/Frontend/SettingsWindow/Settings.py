@@ -49,7 +49,7 @@ class Settings:
         """Creates the download folder on startup if it already doesn't exist"""
         try:
             desktop_path = os.path.join(QDir.homePath(), "Desktop")
-            download_folder_name = "VidDownloader1"
+            download_folder_name = "VidDownloader"
             folder_path = os.path.join(desktop_path, download_folder_name)
             default_download_folder_path = os.path.abspath(folder_path)
             if not os.path.exists(folder_path):
