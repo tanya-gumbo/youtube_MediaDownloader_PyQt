@@ -10,7 +10,7 @@ class VideoDownloader(QThread):
     def __init__(self, link, media_format, parent=None):
         super().__init__(parent)
         self.download_link = link
-        self.default_download_folder_path = None
+        self.download_folder_path = None
         self.media_format = media_format
 
 
