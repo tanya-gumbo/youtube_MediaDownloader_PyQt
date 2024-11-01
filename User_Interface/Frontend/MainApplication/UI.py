@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushBu
     QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
 from User_Interface.Frontend.MainApplication.download_functionality import VideoDownloader
 from User_Interface.Frontend.SettingsWindow.Settings import SideBar, Settings
+import User_Interface.Frontend.SettingsWindow.JSON_file_methods as jsn
 
 
 class MainWindow(QMainWindow):
@@ -78,6 +79,8 @@ class MainWindow(QMainWindow):
         if not event.spontaneous():
             folder_creator = Settings()
             self.download_path = folder_creator.create_download_folder_on_startup()
+            if self.download_path is not None:
+                jsn.update_json_file_path(self.download_path)
 
 
 
