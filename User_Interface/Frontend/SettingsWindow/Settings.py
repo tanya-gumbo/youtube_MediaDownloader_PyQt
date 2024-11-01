@@ -33,6 +33,18 @@ class SideBar(QWidget):
         self.side_menu_layout.addWidget(self.settings_button)
         self.setLayout(self.side_menu_layout)
 
+    def create_download_folder_on_startup(self):
+        """Creates the download folder on startup if it already doesn't exist"""
+        try:
+            desktop_path = os.path.join(QDir.homePath(), "Desktop")
+            download_folder_name = "VidDownloader1"
+            folder_path = os.path.join(desktop_path, download_folder_name)
+            default_download_folder_path = os.path.abspath(folder_path)
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+        except Exception as e:
+            print("Exception is", e)
+
     def settings_button_clicked(self):
         """Opens the settings window"""
 
