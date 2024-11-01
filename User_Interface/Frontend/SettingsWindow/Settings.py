@@ -50,7 +50,9 @@ class Settings:
             default_download_folder_path = os.path.abspath(folder_path)
             if not os.path.exists(folder_path):
                 os.makedirs(folder_path)
-            return default_download_folder_path
+                return default_download_folder_path
+            else:
+                return None
         except Exception as e:
             print("Exception is", e)
 
