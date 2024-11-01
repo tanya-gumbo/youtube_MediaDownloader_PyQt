@@ -66,7 +66,4 @@ class Settings:
     def file_explorer_button_clicked(self):
         """Opens the file location where the videos/audios are being downloaded"""
         file_path = jsn.read_json_file_path()
-        downloads_folder_path = file_path
-
-        # Open the file directory where the Pics folder is located
-        os.startfile(os.path.dirname(downloads_folder_path))
+        os.startfile(file_path)
