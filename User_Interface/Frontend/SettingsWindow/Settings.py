@@ -1,4 +1,6 @@
-from PyQt6.QtCore import Qt, QSize
+import os
+
+from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
 
@@ -33,6 +35,8 @@ class SideBar(QWidget):
         self.side_menu_layout.addWidget(self.settings_button)
         self.setLayout(self.side_menu_layout)
 
+
+class Settings:
     def create_download_folder_on_startup(self):
         """Creates the download folder on startup if it already doesn't exist"""
         try:
