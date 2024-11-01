@@ -1,8 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
-    QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow, QDockWidget
-
+    QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
 from User_Interface.Frontend.MainApplication.download_functionality import VideoDownloader
 from User_Interface.Frontend.SettingsWindow.Settings import SideBar
 
@@ -26,12 +25,13 @@ class MainWindow(QMainWindow):
     def define_ui(self):
         """Defines the core UI which will be displayed to the user"""
         self.setWindowTitle("Youtube Downloader")
-        self.setWindowIcon(QIcon("User_Interface/Frontend/download_icon.png"))
+        self.setWindowIcon(QIcon("User_Interface/Frontend/MainApplication/download_icon.png"))
         self.setGeometry(100, 100, 400, 300)
 
         # Create the central widget and set the layout
         central_widget = QWidget()
         central_widget.setLayout(self.main_layout)
+        central_widget.setStyleSheet("margin-right: 35px;")
         self.setCentralWidget(central_widget)
 
         # Add entry label and entry point for Youtube link to main layout
@@ -56,12 +56,12 @@ class MainWindow(QMainWindow):
 
         self.add_status_menu()
 
-        #Add settings sidebar to the main layout
+        #Add settings sidebar to the window
         side_bar = SideBar()
         dock_widget = QDockWidget(self)
         dock_widget.setTitleBarWidget(QWidget())  # Remove the title bar
         dock_widget.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)  # Disable features
-        dock_widget.setFixedWidth(40)
+        dock_widget.setFixedWidth(35)
         dock_widget.setWidget(side_bar)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
 
