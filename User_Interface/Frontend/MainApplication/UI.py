@@ -1,11 +1,10 @@
 import os
-
 from PyQt6.QtCore import Qt, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
     QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
 from User_Interface.Frontend.MainApplication.download_functionality import VideoDownloader
-from User_Interface.Frontend.SettingsWindow.Settings import SideBar
+from User_Interface.Frontend.SettingsWindow.Settings import SideBar, Settings
 
 
 class MainWindow(QMainWindow):
@@ -71,6 +70,14 @@ class MainWindow(QMainWindow):
         right_side_spacer.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
         right_side_spacer.setFixedWidth(35)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, right_side_spacer)
+
+    def showEvent(self, event):
+        """Creates the download folder for the videos/audios when the window is loaded"""
+        super().showEvent(event)
+        if not event.spontaneous():
+            folder_creator = Settings()
+            folder_creator.create_download_folder_on_startup()
+
 
 
     def add_status_menu_items(self):
