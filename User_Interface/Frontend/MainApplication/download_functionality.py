@@ -12,7 +12,6 @@ class VideoDownloader(QThread):
         self.download_link = link
         self.default_download_folder_path = None
         self.media_format = media_format
-        self.create_download_folder()
 
 
     def get_video_title(self):
@@ -54,16 +53,3 @@ class VideoDownloader(QThread):
                 self.progress_updated.emit(percent)
             except (ValueError, KeyError):
                 pass
-
-
-    def create_download_folder(self):
-        try:
-            desktop_path = os.path.join(QDir.homePath(), "Desktop")
-            download_folder_name = "VidDownloader"
-            folder_path = os.path.join(desktop_path, download_folder_name)
-            self.default_download_folder_path = os.path.abspath(folder_path)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-        except Exception as e:
-            print("Exception is", e)
-
