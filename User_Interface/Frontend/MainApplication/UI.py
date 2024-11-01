@@ -1,4 +1,6 @@
-from PyQt6.QtCore import Qt
+import os
+
+from PyQt6.QtCore import Qt, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, \
     QCheckBox, QButtonGroup, QListWidget, QProgressBar, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
@@ -31,7 +33,6 @@ class MainWindow(QMainWindow):
         # Create the central widget and set the layout
         central_widget = QWidget()
         central_widget.setLayout(self.main_layout)
-        central_widget.setStyleSheet("margin-right: 35px;")
         self.setCentralWidget(central_widget)
 
         # Add entry label and entry point for Youtube link to main layout
@@ -65,6 +66,27 @@ class MainWindow(QMainWindow):
         dock_widget.setWidget(side_bar)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
 
+        right_side_spacer = QDockWidget()
+        right_side_spacer.setTitleBarWidget(QWidget())
+        right_side_spacer.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        right_side_spacer.setFixedWidth(35)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, right_side_spacer)
+
+
+    def add_status_menu_items(self):
+        """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
+        status_label = QLabel()
+        progress_bar = QProgressBar()
+        status_label.setText("Waiting for download...")
+        item = CustomStatusMenuItems(progress_bar, status_label)
+        self.status_menu.addItem(item)
+        self.status_menu.setItemWidget(item, item.widget)
+        return item
+
+    def add_status_menu(self):
+        """Adds the status menu and its components to the main window"""
+        self.main_layout.addWidget(self.status_menu)
+
     def checkbox_clicked(self, button):
         """Ensures the checkboxes remain exclusive and updates the media_format variable"""
         if button is self.mp3_checkbox:
@@ -86,20 +108,17 @@ class MainWindow(QMainWindow):
         self.download_thread.progress_updated.connect(item.update_progress_bar)
         self.download_thread.start()
 
-
-    def add_status_menu_items(self):
-        """Adds the media name and the progress bar to the status menu(QListWidget) in the main window"""
-        status_label = QLabel()
-        progress_bar = QProgressBar()
-        status_label.setText("Waiting for download...")
-        item = CustomStatusMenuItems(progress_bar, status_label)
-        self.status_menu.addItem(item)
-        self.status_menu.setItemWidget(item, item.widget)
-        return item
-
-    def add_status_menu(self):
-        """Adds the status menu and its components to the main window"""
-        self.main_layout.addWidget(self.status_menu)
+    def create_download_folder_on_startup(self):
+        """Creates the download folder on startup if it already doesn't exist"""
+        try:
+            desktop_path = os.path.join(QDir.homePath(), "Desktop")
+            download_folder_name = "VidDownloader1"
+            folder_path = os.path.join(desktop_path, download_folder_name)
+            default_download_folder_path = os.path.abspath(folder_path)
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+        except Exception as e:
+            print("Exception is", e)
 
 
 class CustomStatusMenuItems(QListWidgetItem):
