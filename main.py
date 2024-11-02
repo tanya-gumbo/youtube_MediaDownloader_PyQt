@@ -6,13 +6,6 @@ from User_Interface.Frontend.MainApplication.download_functionality import Video
 from User_Interface.Frontend.SettingsWindow.Settings import Settings
 from User_Interface.Frontend.container import Container
 
-container = Container()
-container.register('settings', Settings)
-container.register('vid_downloader', VideoDownloader, container.resolve('settings'))
-# container.register('side_menu', SideMenu, container.resolve('settings'))
-container.register('main_layout', MainLayout, container.resolve('vid_downloader'))
-container.register('main_window', MainWindow, container.resolve('main_layout'))
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_window = container.resolve('main_window')
