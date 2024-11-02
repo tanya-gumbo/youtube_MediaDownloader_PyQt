@@ -1,6 +1,3 @@
-from PyQt6.QtQml import kwargs
-
-
 class Container:
     def __init__(self):
         self.registry = {}
@@ -10,4 +7,4 @@ class Container:
 
     def resolve(self, name):
         cls, args, kwargs = self.registry[name]
-        return cls(args, kwargs)
+        return cls(*args, **kwargs)
