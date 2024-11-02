@@ -100,19 +100,17 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.status_menu)
 
     def checkbox_clicked(self):
-        """Ensures the checkboxes remain exclusive and updates the media_format variable"""
+        """Updates the media_format variable"""
         if self.mp3_checkbox.isChecked():
             self.media_format = "mp3"
         elif self.mp4_checkbox.isChecked():
             self.media_format = "mp4"
-        print("The media format is", self.media_format)
 
 
     def download_button_clicked(self):
         """Executes the download thread when the download button is clicked"""
         youtube_link = self.youtube_link_entry.text()
         item = self.add_status_menu_items()
-        # print("The media format is", self.media_format)
         self.download_thread = VideoDownloader(youtube_link, self.media_format)
         title = self.download_thread.get_video_title()
         item.set_video_title(title)
