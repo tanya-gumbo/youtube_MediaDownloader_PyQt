@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLineEdit, QLabel, QVBoxLayout, QCheckBox, QButtonGroup, QPushButton, \
     QListWidgetItem, QProgressBar, QListWidget
-
 from User_Interface.Frontend.DependecyManager import container_manager as cont_mnger
 
 
@@ -30,9 +29,9 @@ class MainLayout(QWidget):
 
         # Add checkboxes to button group
         self.mp3_checkbox.setText("mp3")
-        # self.mp3_checkbox.clicked.connect(self.checkbox_clicked)
+        self.mp3_checkbox.clicked.connect(self.checkbox_clicked)
         self.mp4_checkbox.setText("mp4")
-        # self.mp4_checkbox.clicked.connect(self.checkbox_clicked)
+        self.mp4_checkbox.clicked.connect(self.checkbox_clicked)
         self.checkbox_button_group.addButton(self.mp3_checkbox)
         self.checkbox_button_group.addButton(self.mp4_checkbox)
 
@@ -44,11 +43,6 @@ class MainLayout(QWidget):
         self.checkbox_buttons_box.addWidget(self.download_button)
         self.main_layout.addLayout(self.checkbox_buttons_box)
 
-        # add the status menu items to the QListWidget
-        status_menu_items = self.dependency_manager.resolve('custom_status_menu_items')
-        self.status_menu.addItem(status_menu_items)
-        self.status_menu.setItemWidget(status_menu_items, status_menu_items.widget)
-
         # Add QListWidget to the layout
         self.main_layout.addWidget(self.status_menu)
         self.setLayout(self.main_layout)
@@ -59,6 +53,15 @@ class MainLayout(QWidget):
             self.media_format = "mp3"
         elif self.mp4_checkbox.isChecked():
             self.media_format = "mp4"
+
+    def add_status_menu_items(self):
+        """Adds status menu items once a download is started"""
+        status_menu_items = self.dependency_manager.resolve('custom_status_menu_items')
+        self.status_menu.addItem(status_menu_items)
+        self.status_menu.setItemWidget(status_menu_items, status_menu_items.widget)
+
+
+
 
 class CustomStatusMenuItems(QListWidgetItem):
     def __init__(self):
