@@ -1,7 +1,4 @@
 import os
-
-from imageio.plugins.ffmpeg import download
-
 import User_Interface.Frontend.SettingsWindow.JSON_file_methods as jsn
 from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
