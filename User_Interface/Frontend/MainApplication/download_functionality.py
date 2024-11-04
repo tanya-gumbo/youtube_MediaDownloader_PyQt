@@ -1,18 +1,57 @@
 import os
+import time
 import yt_dlp
-from PyQt6.QtCore import QDir, QThread, pyqtSignal
+from PyQt6.QtCore import QDir, QThread, pyqtSignal, QRunnable, QObject
+from imageio.plugins.ffmpeg import download
+
+from User_Interface.Frontend.SettingsWindow import JSON_file_methods as jsn
 
 
-class VideoDownloader(QThread):
+class VideoDownloader(QObject):
     progress_updated = pyqtSignal(int)
     download_finished = pyqtSignal(str)
 
-    def __init__(self, link, media_format, parent=None):
-        super().__init__(parent)
+    def __init__(self, link, media_format):
+        super().__init__()
         self.download_link = link
-        self.download_folder_path = None
         self.media_format = media_format
+        self.download_path = ""
+        self.get_download_path()
 
+    def run(self):
+        print("The file path is", self.download_path)
+
+        base_config = {
+            'outtmpl': f'{self.download_path}/%(title)s.%(ext)s',
+            'format': 'best',
+            'progress_hooks': [self.download_progress_hook]
+        }
+
+        if self.media_format == "mp3":
+            base_config['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': self.media_format,
+                'preferredquality': '0',
+            }]
+        else:
+            base_config.pop('postprocessors', None)
+
+        ydl_opts = base_config
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            try:
+                ydl.download([self.download_link])
+                self.download_finished.emit("Downloaded Successfully")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+    def download_progress_hook(self, d):
+        if d['status'] == 'downloading':
+            try:
+                percent = int(float(d['_percent_str'].strip('%')))
+                self.progress_updated.emit(percent)
+            except (ValueError, KeyError):
+                pass
 
     def get_video_title(self):
         try:
@@ -23,33 +62,13 @@ class VideoDownloader(QThread):
         except Exception as e:
             return f"Error: {e}"
 
+    def get_download_path(self):
+        self.download_path = jsn.read_json_file_path()
+
+class DownloadTask(QRunnable):
+    def __init__(self, downloader):
+        super().__init__()
+        self.downloader = downloader
+
     def run(self):
-        """Download the video as a mp4"""
-        file_path = self.default_download_folder_path
-
-        ydl_opts = {
-            'outtmpl': f'{file_path}/%(title)s.%(ext)s',
-            'format': 'best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': self.media_format,
-                'preferredquality': '0',
-            }],
-            'progress_hooks': [self.download_progress_hook],
-        }
-
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            try:
-                info = ydl.extract_info(self.download_link, download=True)
-                self.download_finished.emit("Downloaded successfully")
-            except Exception as e:
-                self.download_finished.emit(f"Error: {e}")
-
-
-    def download_progress_hook(self, d):
-        if d['status'] == 'downloading':
-            try:
-                percent = int(float(d['_percent_str'].strip('%')))
-                self.progress_updated.emit(percent)
-            except (ValueError, KeyError):
-                pass
+        self.downloader.run()
