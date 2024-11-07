@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
-    QLabel, QFormLayout
+    QLabel, QFormLayout, QLineEdit
 from User_Interface.Frontend.Settings import JSON_file_methods as jsn
 
 class SettingsWindow(QDialog):
@@ -13,27 +13,39 @@ class SettingsWindow(QDialog):
 
     def define_ui(self):
         """Defines elements of the UI"""
-        settings_pane = QListWidget()
-        settings_pane.setMaximumWidth(100)
+        try:
+            settings_pane = QListWidget()
+            settings_pane.setMaximumWidth(100)
+            settings_pane.addItem("User profile")
+            settings_pane.addItem("Downloads")
+            settings_pane.currentRowChanged.connect(self.display_pane)
 
-        pane_box = QHBoxLayout()
-        pane_box.addWidget(settings_pane)
-        pane_box.addWidget(self.contents_pane)
+            pane_box = QHBoxLayout()
+            pane_box.addWidget(settings_pane)
 
-        update_and_cancel_button_box = QHBoxLayout()
-        update_button = QPushButton("Update")
-        cancel_button = QPushButton("Cancel")
-        update_and_cancel_button_box.addWidget(update_button)
-        update_and_cancel_button_box.addWidget(cancel_button)
+            user_profile_pane = self.create_user_profile_pane()
+            self.contents_pane.addWidget(user_profile_pane)
+            download_pane = self.create_downloads_pane()
+            self.contents_pane.addWidget(download_pane)
+            pane_box.addWidget(self.contents_pane)
 
-        settings_window_layout = QVBoxLayout()
-        settings_window_layout.addLayout(pane_box)
-        settings_window_layout.addLayout(update_and_cancel_button_box)
-        self.setLayout(settings_window_layout)
+            update_and_cancel_button_box = QHBoxLayout()
+            update_button = QPushButton("Update")
+            cancel_button = QPushButton("Cancel")
+            update_and_cancel_button_box.addWidget(update_button)
+            update_and_cancel_button_box.addWidget(cancel_button)
 
-        self.setFixedSize(400, 300)
-        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
-        self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+            settings_window_layout = QVBoxLayout()
+            settings_window_layout.addLayout(pane_box)
+            settings_window_layout.addLayout(update_and_cancel_button_box)
+            self.setLayout(settings_window_layout)
+
+            self.setFixedSize(400, 300)
+            self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
+            self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+        except Exception as e:
+            print("The exception is", e)
+
 
 
     def create_downloads_pane(self):
@@ -42,7 +54,7 @@ class SettingsWindow(QDialog):
         main_layout = QWidget()
 
         download_label = QLabel()
-        download_label.setText("Download folder path:")
+        download_label.setText("Download folder:")
         download_path = QLabel()
         download_path.setText(download_path_text)
         change_path_button = QPushButton("Change download folder")
@@ -50,17 +62,41 @@ class SettingsWindow(QDialog):
         change_path_button.setToolTip(change_path_tool_tip)
 
         layout = QFormLayout()
-        layout.addItem(download_label)
-        layout.addItem(download_path)
-        layout.addItem(change_path_button)
+        layout.addWidget(download_label)
+        layout.addWidget(download_path)
+        layout.addWidget(change_path_button)
         main_layout.setLayout(layout)
+        return main_layout
 
 
     def create_user_profile_pane(self):
         """Creates the user profile pane to be added to the content pane"""
+        main_layout = QWidget()
+
+        name_label = QLabel()
+        name_label.setText("Name")
+        name_entry = QLineEdit()
+        name_entry.setText("temporary name")
+
+        email_label = QLabel()
+        email_label.setText("Email")
+        email_entry = QLineEdit()
+        email_entry.setText("temporary email")
+
+        layout = QFormLayout()
+        layout.addWidget(name_label)
+        layout.addWidget(name_entry)
+        layout.addWidget(email_label)
+        layout.addWidget(email_entry)
+        main_layout.setLayout(layout)
+        return main_layout
 
     def display_pane(self, index):
         """Display the pane in the QStackWidget according to the index passed"""
+        if index == 0:
+            self.contents_pane.setCurrentIndex(index)
+        elif index == 1:
+            self.contents_pane.setCurrentIndex(index)
 
     def update_button_clicked(self):
         """Saves any changes made when the update button is clicked"""
