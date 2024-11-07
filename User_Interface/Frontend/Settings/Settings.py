@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
 
 
 class SideBar(QWidget):
-    """Class that contains the sidebar to be added to the main Application window"""
+    """Class that contains the sidebar to be added to the QDocketWidget in the main Application window"""
     def __init__(self):
         super().__init__()
         self.side_menu_layout = QVBoxLayout()
@@ -16,7 +16,7 @@ class SideBar(QWidget):
         self.side_menu_layout.setSpacing(0)
 
         self.settings_button = QPushButton()
-        self.settings_button.clicked.connect(Settings.settings_button_clicked)
+        self.settings_button.clicked.connect(self.settings_button_clicked)
         self.settings_button.setIcon(QIcon("User_Interface/Frontend/Settings/settings_icon.png"))
         self.settings_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.settings_button.setStyleSheet("background-color: transparent;border: none; padding: 0px;")
@@ -26,7 +26,7 @@ class SideBar(QWidget):
         self.file_explorer_button = QPushButton()
         file_expl_tool_tip_text = "Opens folder which contains downloads"
         self.file_explorer_button.setToolTip(file_expl_tool_tip_text)
-        self.file_explorer_button.clicked.connect(Settings.file_explorer_button_clicked)
+        self.file_explorer_button.clicked.connect(self.file_explorer_button_clicked)
         self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/Settings/file_explorer_icon.png"))
         self.file_explorer_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.file_explorer_button.setStyleSheet(
@@ -39,11 +39,17 @@ class SideBar(QWidget):
         self.side_menu_layout.addWidget(self.settings_button)
         self.setLayout(self.side_menu_layout)
 
+    def settings_button_clicked(self):
+        """Opens the settings window"""
+
+    def file_explorer_button_clicked(self):
+        """Opens the file location where the videos/audios are being downloaded"""
+        file_path = jsn.read_json_file_path()
+        os.startfile(file_path)
+
 
 class Settings:
-    def __init__(self):
-        self.download_path = ""
-
+    """Class contains methods associated with the Settings"""
 
     def create_download_folder_on_startup(self):
         """Creates the download folder on startup if it already doesn't exist"""
@@ -59,11 +65,3 @@ class Settings:
                 return None
         except Exception as e:
             print("Exception is", e)
-
-    def settings_button_clicked(self):
-        """Opens the settings window"""
-
-    def file_explorer_button_clicked(self):
-        """Opens the file location where the videos/audios are being downloaded"""
-        file_path = jsn.read_json_file_path()
-        os.startfile(file_path)
