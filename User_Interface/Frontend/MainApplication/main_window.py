@@ -1,9 +1,11 @@
+import os
+
 from PyQt6.QtCore import Qt, QDir, QThread
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidget, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
 from User_Interface.Frontend.MainApplication.main_layout import MainLayout
 from User_Interface.Frontend.Settings import JSON_file_methods as jsn
-from User_Interface.Frontend.Settings.Settings import SideBar, Settings
+from User_Interface.Frontend.Settings.Settings import SideBar
 
 
 class MainWindow(QMainWindow):
@@ -51,7 +53,21 @@ class MainWindow(QMainWindow):
         """Creates the download folder for the videos/audios when the window is loaded"""
         super().showEvent(event)
         if not event.spontaneous():
-            folder_creator = Settings()
-            download_path = folder_creator.create_download_folder_on_startup()
+            download_path =self.create_download_folder_on_startup()
             if download_path is not None:
                 jsn.update_json_file_path(download_path)
+
+    def create_download_folder_on_startup(self):
+        """Creates the download folder on startup if it already doesn't exist"""
+        try:
+            desktop_path = os.path.join(QDir.homePath(), "Desktop")
+            download_folder_name = "VidDownloader"
+            folder_path = os.path.join(desktop_path, download_folder_name)
+            default_download_folder_path = os.path.abspath(folder_path)
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+                return default_download_folder_path
+            else:
+                return None
+        except Exception as e:
+            print("Exception is", e)
