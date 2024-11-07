@@ -4,6 +4,8 @@ from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
 
+from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
+
 
 class SideBar(QWidget):
     """Class that contains the sidebar to be added to the QDocketWidget in the main Application window"""
@@ -41,6 +43,8 @@ class SideBar(QWidget):
 
     def settings_button_clicked(self):
         """Opens the settings window"""
+        settings_window = SettingsWindow()
+        settings_window.exec()
 
     def file_explorer_button_clicked(self):
         """Opens the file location where the videos/audios are being downloaded"""
