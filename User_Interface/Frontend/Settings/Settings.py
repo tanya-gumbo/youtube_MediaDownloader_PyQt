@@ -51,17 +51,4 @@ class SideBar(QWidget):
 class Settings:
     """Class contains methods associated with the Settings"""
 
-    def create_download_folder_on_startup(self):
-        """Creates the download folder on startup if it already doesn't exist"""
-        try:
-            desktop_path = os.path.join(QDir.homePath(), "Desktop")
-            download_folder_name = "VidDownloader"
-            folder_path = os.path.join(desktop_path, download_folder_name)
-            default_download_folder_path = os.path.abspath(folder_path)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-                return default_download_folder_path
-            else:
-                return None
-        except Exception as e:
-            print("Exception is", e)
+
