@@ -24,6 +24,8 @@ class SideBar(QWidget):
         self.settings_button.setFixedSize(35, 20)
 
         self.file_explorer_button = QPushButton()
+        file_expl_tool_tip_text = "Opens folder which contains downloads"
+        self.file_explorer_button.setToolTip(file_expl_tool_tip_text)
         self.file_explorer_button.clicked.connect(Settings.file_explorer_button_clicked)
         self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/Settings/file_explorer_icon.png"))
         self.file_explorer_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
