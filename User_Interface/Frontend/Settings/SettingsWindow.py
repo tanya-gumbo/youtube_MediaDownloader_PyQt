@@ -1,18 +1,36 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget
+from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget, QHBoxLayout, QVBoxLayout, QPushButton
 
 
 class SettingsWindow(QDialog):
     def __init__(self):
         super().__init__()
-        self.setGeometry(100, 100, 500, 300)
+        self.setGeometry(100, 100, 400, 300)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
         self.contents_pane = QStackedWidget()
+        self.define_ui()
 
     def define_ui(self):
         """Defines elements of the UI"""
         settings_pane = QListWidget()
-        self.setFixedSize(500, 300)
+        settings_pane.setMaximumWidth(100)
+
+        pane_box = QHBoxLayout()
+        pane_box.addWidget(settings_pane)
+        pane_box.addWidget(self.contents_pane)
+
+        update_and_cancel_button_box = QHBoxLayout()
+        update_button = QPushButton("Update")
+        cancel_button = QPushButton("Cancel")
+        update_and_cancel_button_box.addWidget(update_button)
+        update_and_cancel_button_box.addWidget(cancel_button)
+
+        settings_window_layout = QVBoxLayout()
+        settings_window_layout.addLayout(pane_box)
+        settings_window_layout.addLayout(update_and_cancel_button_box)
+        self.setLayout(settings_window_layout)
+
+        self.setFixedSize(400, 300)
         self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
         self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 
