@@ -46,9 +46,3 @@ class SideBar(QWidget):
         """Opens the file location where the videos/audios are being downloaded"""
         file_path = jsn.read_json_file_path()
         os.startfile(file_path)
-
-
-class Settings:
-    """Class contains methods associated with the Settings"""
-
-
