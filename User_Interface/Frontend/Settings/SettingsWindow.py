@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget, QHBoxLayout, QVBoxLayout, QPushButton
-
+from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
+    QLabel, QFormLayout
+from User_Interface.Frontend.Settings import JSON_file_methods as jsn
 
 class SettingsWindow(QDialog):
     def __init__(self):
@@ -36,7 +37,24 @@ class SettingsWindow(QDialog):
 
 
     def create_downloads_pane(self):
-        """Creates the downloads pane to be added to the content pane"""
+        """Creates the downloads contents pane to be added to the content pane"""
+        download_path_text = jsn.read_json_file_path()
+        main_layout = QWidget()
+
+        download_label = QLabel()
+        download_label.setText("Download folder path:")
+        download_path = QLabel()
+        download_path.setText(download_path_text)
+        change_path_button = QPushButton("Change download folder")
+        change_path_tool_tip = "Changes the default download folder"
+        change_path_button.setToolTip(change_path_tool_tip)
+
+        layout = QFormLayout()
+        layout.addItem(download_label)
+        layout.addItem(download_path)
+        layout.addItem(change_path_button)
+        main_layout.setLayout(layout)
+
 
     def create_user_profile_pane(self):
         """Creates the user profile pane to be added to the content pane"""
