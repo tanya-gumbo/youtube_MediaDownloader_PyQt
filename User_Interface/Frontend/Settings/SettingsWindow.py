@@ -1,13 +1,21 @@
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget
 
 
 class SettingsWindow(QDialog):
     def __init__(self):
         super().__init__()
-
+        self.setGeometry(100, 100, 500, 300)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
+        self.contents_pane = QStackedWidget()
 
     def define_ui(self):
         """Defines elements of the UI"""
+        settings_pane = QListWidget()
+        self.setFixedSize(500, 300)
+        self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
+        self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+
 
     def create_downloads_pane(self):
         """Creates the downloads pane to be added to the content pane"""
