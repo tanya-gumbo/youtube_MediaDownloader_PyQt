@@ -1,5 +1,5 @@
 import os
-import User_Interface.Frontend.SettingsWindow.JSON_file_methods as jsn
+import User_Interface.Frontend.Settings.JSON_file_methods as jsn
 from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
@@ -14,9 +14,10 @@ class SideBar(QWidget):
 
         # Set spacing between buttons to 0
         self.side_menu_layout.setSpacing(0)
+
         self.settings_button = QPushButton()
         self.settings_button.clicked.connect(Settings.settings_button_clicked)
-        self.settings_button.setIcon(QIcon("User_Interface/Frontend/SettingsWindow/settings_icon.png"))
+        self.settings_button.setIcon(QIcon("User_Interface/Frontend/Settings/settings_icon.png"))
         self.settings_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.settings_button.setStyleSheet("background-color: transparent;border: none; padding: 0px;")
         self.settings_button.setIconSize(QSize(32, 19))  # Set the size of the icon
@@ -24,7 +25,7 @@ class SideBar(QWidget):
 
         self.file_explorer_button = QPushButton()
         self.file_explorer_button.clicked.connect(Settings.file_explorer_button_clicked)
-        self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/SettingsWindow/file_explorer_icon.png"))
+        self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/Settings/file_explorer_icon.png"))
         self.file_explorer_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.file_explorer_button.setStyleSheet(
             "background-color: transparent; border: none; padding: 0px;"

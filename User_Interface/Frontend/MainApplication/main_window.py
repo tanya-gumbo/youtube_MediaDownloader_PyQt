@@ -2,8 +2,8 @@ from PyQt6.QtCore import Qt, QDir, QThread
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidget, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
 from User_Interface.Frontend.MainApplication.main_layout import MainLayout
-from User_Interface.Frontend.SettingsWindow import JSON_file_methods as jsn
-from User_Interface.Frontend.SettingsWindow.Settings import SideBar, Settings
+from User_Interface.Frontend.Settings import JSON_file_methods as jsn
+from User_Interface.Frontend.Settings.Settings import SideBar, Settings
 
 
 class MainWindow(QMainWindow):

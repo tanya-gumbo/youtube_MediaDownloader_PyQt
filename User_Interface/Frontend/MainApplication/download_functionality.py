@@ -4,7 +4,7 @@ import yt_dlp
 from PyQt6.QtCore import QDir, QThread, pyqtSignal, QRunnable, QObject
 from imageio.plugins.ffmpeg import download
 
-from User_Interface.Frontend.SettingsWindow import JSON_file_methods as jsn
+from User_Interface.Frontend.Settings import JSON_file_methods as jsn
 
 
 class VideoDownloader(QObject):
