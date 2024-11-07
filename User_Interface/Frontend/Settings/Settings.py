@@ -3,7 +3,6 @@ import User_Interface.Frontend.Settings.JSON_file_methods as jsn
 from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
-
 from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
 
 
