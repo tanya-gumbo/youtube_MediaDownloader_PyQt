@@ -19,7 +19,7 @@ class SideBar(QWidget):
 
         self.settings_button = QPushButton()
         self.settings_button.clicked.connect(self.settings_button_clicked)
-        self.settings_button.setIcon(QIcon("User_Interface/Frontend/Settings/settings_icon.png"))
+        self.settings_button.setIcon(QIcon("User_Interface/Frontend/Settings/images/settings_icon.png"))
         self.settings_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.settings_button.setStyleSheet("background-color: transparent;border: none; padding: 0px;")
         self.settings_button.setIconSize(QSize(32, 19))  # Set the size of the icon
@@ -30,7 +30,7 @@ class SideBar(QWidget):
         file_expl_tool_tip_text = "Opens folder which contains downloads"
         self.file_explorer_button.setToolTip(file_expl_tool_tip_text)
         self.file_explorer_button.clicked.connect(self.file_explorer_button_clicked)
-        self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/Settings/file_explorer_icon.png"))
+        self.file_explorer_button.setIcon(QIcon("User_Interface/Frontend/Settings/images/file_explorer_icon.png"))
         self.file_explorer_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.file_explorer_button.setStyleSheet(
             "background-color: transparent; border: none; padding: 0px;"
@@ -42,7 +42,7 @@ class SideBar(QWidget):
         dashboard_tool_tip = "Opens the user dashboard"
         self.dashboard_button.setToolTip(dashboard_tool_tip)
         self.dashboard_button.clicked.connect(self.dashboard_button_clicked)
-        self.dashboard_button.setIcon(QIcon("User_Interface/Frontend/Settings/dashboard.png"))
+        self.dashboard_button.setIcon(QIcon("User_Interface/Frontend/Settings/images/dashboard.png"))
         self.dashboard_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         self.dashboard_button.setStyleSheet(
             "background-color: transparent; border: none; padding: 0px;"
