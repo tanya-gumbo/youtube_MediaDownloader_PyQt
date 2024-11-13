@@ -9,3 +9,12 @@ class UserProfile(QDialog):
 
     def define_ui(self):
         pass
+
+    def login_button_clicked(self):
+        pass
+
+    def register_button_clicked(self):
+        pass
+
+    def forgot_pass_button_clicked(self):
+        pass
