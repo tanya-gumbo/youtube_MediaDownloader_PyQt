@@ -3,8 +3,10 @@ import time
 import yt_dlp
 from PyQt6.QtCore import QDir, QThread, pyqtSignal, QRunnable, QObject
 from imageio.plugins.ffmpeg import download
-
 from User_Interface.Frontend.Settings import JSON_file_methods as jsn
+"""Error log: Doesn't download mp3 version of the same video. So if video version exists, video is not downloaded
+We need to add functionality that handles errors better 
+"""
 
 
 class VideoDownloader(QObject):
@@ -23,7 +25,7 @@ class VideoDownloader(QObject):
 
         base_config = {
             'outtmpl': f'{self.download_path}/%(title)s.%(ext)s',
-            'format': 'best',
+            'format': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
             'progress_hooks': [self.download_progress_hook]
         }
 
