@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy, QErrorMessage, QMessageBox
 from User_Interface.Frontend.Settings.DashboardWindow import DashboardWindow
 from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
+from User_Interface.Frontend.Settings.UserProfile import UserProfile
 
 
 class SideBar(QWidget):
@@ -94,4 +95,5 @@ class SideBar(QWidget):
             print("The exception in dash", e)
 
     def user_profile_button_clicked(self):
-        pass
+        user_profile = UserProfile()
+        user_profile.exec()
