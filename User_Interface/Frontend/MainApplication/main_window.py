@@ -1,11 +1,12 @@
 import os
 
-from PyQt6.QtCore import Qt, QDir, QThread
+from PyQt6.QtCore import Qt, QDir, QThread, QSize
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QListWidget, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QListWidget, QMainWindow, QDockWidget, QSpacerItem, QSizePolicy, QPushButton, \
+    QVBoxLayout, QHBoxLayout
 from User_Interface.Frontend.MainApplication.main_layout import MainLayout
 from User_Interface.Frontend.Settings import JSON_file_methods as jsn
-from User_Interface.Frontend.Settings.Settings import SideBar
+from User_Interface.Frontend.Settings.Sidebar import SideBar
 
 
 class MainWindow(QMainWindow):
@@ -40,12 +41,14 @@ class MainWindow(QMainWindow):
             # Add settings sidebar to the window
             self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
 
-            #Add dock to the right side to offset left side
+            #Add dock to the right side to offset space at the left
+
             right_side_spacer = QDockWidget()
             right_side_spacer.setTitleBarWidget(QWidget())
             right_side_spacer.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
             right_side_spacer.setFixedWidth(35)
             self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, right_side_spacer)
+
         except Exception as main_window_ex:
             print("error in main_window",main_window_ex)
 
@@ -71,3 +74,6 @@ class MainWindow(QMainWindow):
                 return None
         except Exception as e:
             print("Exception is", e)
+
+    def user_profile_button_clicked(self):
+        print("Button clicked for the user profile")
