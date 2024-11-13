@@ -31,3 +31,12 @@ def update_json_file_path(file_path):
     except Exception as z:
         print(z)
 
+def read_json_status():
+    try:
+        with open('User_Interface/Frontend/Settings/app_settings.json', 'r') as file:
+           data = json.load(file)
+           status = data['user_status']
+           return status
+    except Exception as e:
+        print(e)
+
