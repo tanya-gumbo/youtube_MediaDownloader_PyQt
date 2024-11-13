@@ -1,4 +1,5 @@
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QDialog, QStackedWidget, QListWidget, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
     QLabel, QFormLayout, QLineEdit
 from User_Interface.Frontend.Settings import JSON_file_methods as jsn
@@ -76,11 +77,14 @@ class SettingsWindow(QDialog):
         name_label = QLabel()
         name_label.setText("Name")
         name_entry = QLineEdit()
+        name_entry.setStyleSheet("border-radius: 10px !important")
         name_entry.setText("temporary name")
 
         email_label = QLabel()
         email_label.setText("Email")
+        email_label.setFont(QFont("Tahoma", 12))
         email_entry = QLineEdit()
+        email_entry.setStyleSheet("border-radius: 10px")
         email_entry.setText("temporary email")
 
         layout = QFormLayout()
@@ -88,6 +92,7 @@ class SettingsWindow(QDialog):
         layout.addWidget(name_entry)
         layout.addWidget(email_label)
         layout.addWidget(email_entry)
+        main_layout.repaint()
         main_layout.setLayout(layout)
         return main_layout
 
