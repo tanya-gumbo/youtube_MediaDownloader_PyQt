@@ -3,6 +3,7 @@ import User_Interface.Frontend.Settings.JSON_file_methods as jsn
 from PyQt6.QtCore import Qt, QSize, QDir
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
+from User_Interface.Frontend.Settings.DashboardWindow import DashboardWindow
 from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
 
 
@@ -24,6 +25,7 @@ class SideBar(QWidget):
         self.settings_button.setIconSize(QSize(32, 19))  # Set the size of the icon
         self.settings_button.setFixedSize(35, 20)
 
+
         self.file_explorer_button = QPushButton()
         file_expl_tool_tip_text = "Opens folder which contains downloads"
         self.file_explorer_button.setToolTip(file_expl_tool_tip_text)
@@ -36,6 +38,19 @@ class SideBar(QWidget):
         self.file_explorer_button.setIconSize(QSize(32, 19))  # Set the size of the icon
         self.file_explorer_button.setFixedSize(35, 20)
 
+        self.dashboard_button = QPushButton()
+        dashboard_tool_tip = "Opens the user dashboard"
+        self.dashboard_button.setToolTip(dashboard_tool_tip)
+        self.dashboard_button.clicked.connect(self.dashboard_button_clicked)
+        self.dashboard_button.setIcon(QIcon("User_Interface/Frontend/Settings/dashboard.png"))
+        self.dashboard_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.dashboard_button.setStyleSheet(
+            "background-color: transparent; border: none; padding: 0px;"
+        )
+        self.dashboard_button.setIconSize(QSize(30, 17))  # Set the size of the icon
+        self.dashboard_button.setFixedSize(33, 18)
+
+        self.side_menu_layout.addWidget(self.dashboard_button)
         self.side_menu_layout.addWidget(self.file_explorer_button)
         self.side_menu_layout.addWidget(self.settings_button)
         self.setLayout(self.side_menu_layout)
@@ -49,3 +64,7 @@ class SideBar(QWidget):
         """Opens the file location where the videos/audios are being downloaded"""
         file_path = jsn.read_json_file_path()
         os.startfile(file_path)
+
+    def dashboard_button_clicked(self):
+        dashboard_window = DashboardWindow()
+        dashboard_window.exec()
