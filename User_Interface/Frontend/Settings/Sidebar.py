@@ -1,8 +1,8 @@
 import os
 import User_Interface.Frontend.Settings.JSON_file_methods as jsn
-from PyQt6.QtCore import Qt, QSize, QDir
+from PyQt6.QtCore import Qt, QSize, QDir, QMessageLogger
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy, QErrorMessage, QMessageBox
 from User_Interface.Frontend.Settings.DashboardWindow import DashboardWindow
 from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
 
@@ -47,12 +47,25 @@ class SideBar(QWidget):
         self.dashboard_button.setStyleSheet(
             "background-color: transparent; border: none; padding: 0px;"
         )
-        self.dashboard_button.setIconSize(QSize(30, 17))  # Set the size of the icon
-        self.dashboard_button.setFixedSize(33, 18)
+        self.dashboard_button.setIconSize(QSize(32, 19))  # Set the size of the icon
+        self.dashboard_button.setFixedSize(35, 20)
+
+        self.user_profile_button = QPushButton()
+        user_profile_tool_tip = "Opens the user profile for sign in or sign out"
+        self.user_profile_button.setToolTip(dashboard_tool_tip)
+        self.user_profile_button.clicked.connect(self.user_profile_button_clicked)
+        self.user_profile_button.setIcon(QIcon("User_Interface/Frontend/Settings/images/user_profile.png"))
+        self.user_profile_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        self.user_profile_button.setStyleSheet(
+            "background-color: transparent; border: none; padding: 0px;"
+        )
+        self.user_profile_button.setIconSize(QSize(32, 19))  # Set the size of the icon
+        self.user_profile_button.setFixedSize(35, 20)
 
         self.side_menu_layout.addWidget(self.dashboard_button)
         self.side_menu_layout.addWidget(self.file_explorer_button)
         self.side_menu_layout.addWidget(self.settings_button)
+        self.side_menu_layout.addWidget(self.user_profile_button)
         self.setLayout(self.side_menu_layout)
 
     def settings_button_clicked(self):
@@ -66,5 +79,19 @@ class SideBar(QWidget):
         os.startfile(file_path)
 
     def dashboard_button_clicked(self):
-        dashboard_window = DashboardWindow()
-        dashboard_window.exec()
+        try:
+            user_status = jsn.read_json_status()
+            if user_status == "logged in":
+                dashboard_window = DashboardWindow()
+                dashboard_window.exec()
+            else:
+                QMessageBox().information(
+                    self,
+                    "Error",
+                    "You cannot access the dashboard if you aren't logged in. \nNavigate to the user profile to log in"
+                )
+        except Exception as e:
+            print("The exception in dash", e)
+
+    def user_profile_button_clicked(self):
+        pass
