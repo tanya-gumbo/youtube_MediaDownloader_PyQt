@@ -1,3 +1,5 @@
+import secrets
+
 import bcrypt
 
 def hash_token(token: str):
@@ -17,3 +19,11 @@ def hash_password(password: str):
 # Function to verify the password
 def verify_password(entered_password: str, stored_hashed_password: str) -> bool:
     return bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password.encode('utf-8'))
+
+def create_user_tokens():
+    token_list = []
+    for _ in range(3):
+        token = secrets.token_urlsafe(16)
+        hashed_token = hash_token(token)
+        token_list.append(hashed_token)
+    return token_list
