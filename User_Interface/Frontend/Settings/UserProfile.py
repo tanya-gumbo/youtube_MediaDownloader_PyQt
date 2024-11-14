@@ -1,9 +1,15 @@
 from venv import create
 
+import httpx
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLineEdit, QLabel, QHBoxLayout, QPushButton, \
-    QStackedLayout, QWidget
+    QStackedLayout, QWidget, QMessageBox
+from qasync import asyncSlot
+from sqlalchemy import except_
+
+
+# from User_Interface.Frontend.Settings.user_profile_button_utilities import register_button_clicked
 
 
 class UserProfile(QDialog):
@@ -61,8 +67,11 @@ class UserProfile(QDialog):
         button_box = QHBoxLayout()
         register_button = QPushButton("Sign up")
         register_button.setMaximumSize(100, 30)
+
+        register_button.clicked.connect(self.register_button_clicked)
         login_button = QPushButton("Login")
         login_button.setMaximumSize(100, 30)
+        login_button.clicked.connect(self.login_button_clicked)
         button_box.addWidget(register_button)
         button_box.addWidget(login_button)
 
@@ -119,11 +128,66 @@ class UserProfile(QDialog):
         return button_box
 
 
-    def login_button_clicked(self):
-        pass
+    @asyncSlot()
+    async def register_button_clicked(self):
+        print("In method")
+        username = self.username_entry.text()
+        password = self.username_entry.text()
 
-    def register_button_clicked(self):
-        pass
+        if not username and not password:
+            print("Enter both username and password")
+            return
 
-    def forgot_pass_button_clicked(self):
-        pass
+        if not username or not password:
+            print("All fields are mandatory")
+            return
+
+        try:
+            async with httpx.AsyncClient(timeout=55) as client:
+                response = await client.post(
+                    "http://127.0.0.1:8000/register",
+                    json={"user_name": username, "password": password}
+                )
+                if response.status_code == 200:
+                    message = response.json()['message']
+                    print("The message is", message)
+                    QMessageBox().information(
+                        self,
+                        "Information",
+                        message
+                    )
+                else:
+                    return response.json()['message']
+        except httpx.TimeoutException:
+            print("Timeout exception")
+        except httpx.RequestError:
+            print("Server error")
+
+    @asyncSlot()
+    async def login_button_clicked(self):
+        username = self.username_entry.text()
+        password = self.username_entry.text()
+
+        if not username and not password:
+            print("Enter both username and password")
+            return
+
+        if not username or not password:
+            print("All fields are mandatory")
+            return
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "http://127.0.0.1:8000/login",
+                    json={"user_name": username, "password": password}
+                )
+                if response.status_code == 200:
+                    message = response.json()['message']
+                    print("The message is", message)
+                else:
+                    print("The message is", response.json()['message'])
+        except httpx.TimeoutException:
+            print("Timeout exception")
+        except httpx.RequestError:
+            print("Server error")
