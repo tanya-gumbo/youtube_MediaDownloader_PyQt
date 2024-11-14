@@ -1,10 +1,10 @@
 import secrets
-
 import bcrypt
 
 def hash_token(token: str):
     salt = bcrypt.gensalt()
     hashed_token = bcrypt.hashpw(token.encode(), salt)
+    print(f"Token number was encoded successfully")
     return hashed_token.decode('utf-8')
 
 def verify_token(entered_token: str, stored_hashed_token: str) ->bool:
@@ -24,6 +24,5 @@ def create_user_tokens():
     token_list = []
     for _ in range(3):
         token = secrets.token_urlsafe(16)
-        hashed_token = hash_token(token)
-        token_list.append(hashed_token)
+        token_list.append(token)
     return token_list
