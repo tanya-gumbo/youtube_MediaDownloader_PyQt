@@ -42,8 +42,8 @@ class RecoveryTokens(Base):
 
 
 #Create the tables
-Base.metadata.create_all(bind=engine)
-print("Tables created successfully")
+# Base.metadata.create_all(bind=engine)
+# print("Tables created successfully")
 
 def get_db():
     db = SessionLocal()
