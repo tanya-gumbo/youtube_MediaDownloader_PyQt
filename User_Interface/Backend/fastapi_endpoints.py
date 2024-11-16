@@ -60,14 +60,14 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
         token_list = create_user_tokens()
         hashed_token_list = []
 
-        for x in range(3):
+        for x in range(5):
             token = token_list[x]
             hashed_token = hash_token(token)
             hashed_token_list.append(hashed_token)
 
         db_token_list = []
 
-        for x in range(3):
+        for x in range(5):
             token = hashed_token_list[x]
             db_token_list.append(RecoveryTokens(user_id = db_user.user_name, hashed_token=token, use_status=False))
 
@@ -82,9 +82,12 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
                 Token1: {token_list[0]}
                 Token2: {token_list[1]}
                 Token3: {token_list[2]}
-                Further information on recovery tokens and how to reset your password 
-                are in the user profile section or on our 'Need Help' page.
-                Proceed to login."""
+                Token4: {token_list[3]}
+                Token5: {token_list[4]}
+                You only have 5 recovery tokens.
+                Further information on recovery tokens and how to reset your 
+                password are in the user profile section or on our
+                'Need Help' page. Proceed to login."""
         whole_func_end = time.monotonic()
         print(f"The whole time for the whole function is {whole_func_end-whole_func_start:.5f} seconds")
         return {"message": return_message}
