@@ -40,3 +40,15 @@ def read_json_status():
     except Exception as e:
         print(e)
 
+def update_json_status(new_status: str):
+    try:
+        with open('User_Interface/Frontend/Settings/app_settings.json', 'r') as file:
+            data = json.load(file)
+
+        data['user_status'] = new_status
+
+        with open('User_Interface/Frontend/Settings/app_settings.json', 'w') as file:
+            json.dump(data, file, indent=4)
+
+    except Exception as e:
+        print(e)
