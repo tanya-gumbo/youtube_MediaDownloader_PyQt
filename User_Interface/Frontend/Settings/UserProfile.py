@@ -190,6 +190,14 @@ class UserProfile(QDialog):
         except httpx.RequestError:
             print("Server error")
 
+    def forgot_password_button_clicked(self):
+        """Allows the user to reset their password by providing a reset token"""
+        pass
+
+    def need_button_clicked(self):
+        """Opens a file with instructions on how to use the app and more"""
+        pass
+
     def open_user_logged_in_window(self):
         self.close()
         user_logged_in = UserLoggedIn()
