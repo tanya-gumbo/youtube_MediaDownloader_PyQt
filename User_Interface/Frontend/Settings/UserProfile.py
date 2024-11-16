@@ -1,12 +1,10 @@
-from venv import create
-
+from User_Interface.Frontend.Settings import JSON_file_methods as jsn
 import httpx
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QLineEdit, QLabel, QHBoxLayout, QPushButton, \
     QStackedLayout, QWidget, QMessageBox
 from qasync import asyncSlot
-from sqlalchemy import except_
+from User_Interface.Frontend.Settings.user_logged_in_window import UserLoggedIn
 
 
 # from User_Interface.Frontend.Settings.user_profile_button_utilities import register_button_clicked
@@ -143,7 +141,7 @@ class UserProfile(QDialog):
             return
 
         try:
-            async with httpx.AsyncClient(timeout=55) as client:
+            async with httpx.AsyncClient(timeout=10) as client:
                 response = await client.post(
                     "http://127.0.0.1:8000/register",
                     json={"user_name": username, "password": password}
@@ -157,7 +155,7 @@ class UserProfile(QDialog):
                         message
                     )
                 else:
-                    return response.json()['message']
+                    print("The error in register button clicked is", response.status_code)
         except httpx.TimeoutException:
             print("Timeout exception")
         except httpx.RequestError:
@@ -177,17 +175,22 @@ class UserProfile(QDialog):
             return
 
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=10) as client:
                 response = await client.post(
                     "http://127.0.0.1:8000/login",
                     json={"user_name": username, "password": password}
                 )
-                if response.status_code == 200:
-                    message = response.json()['message']
-                    print("The message is", message)
+                if response.status_code == 200 and response.json()['message'] == "logged in":
+                    jsn.update_json_status("logged in")
+                    self.open_user_logged_in_window()
                 else:
                     print("The message is", response.json()['message'])
         except httpx.TimeoutException:
             print("Timeout exception")
         except httpx.RequestError:
             print("Server error")
+
+    def open_user_logged_in_window(self):
+        self.close()
+        user_logged_in = UserLoggedIn()
+        user_logged_in.exec()
