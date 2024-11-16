@@ -16,7 +16,6 @@ async def main():
     # Start the FastAPI server in a separate thread
     fastapi_thread = threading.Thread(target=start_fastapi, daemon=True)
     fastapi_thread.start()
-
     main_window = MainWindow()
     main_window.show()
 
