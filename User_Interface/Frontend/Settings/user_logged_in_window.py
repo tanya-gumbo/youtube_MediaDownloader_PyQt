@@ -6,10 +6,11 @@ class UserLoggedIn(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("User profile")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 350, 250)
         self.define_ui()
 
     def define_ui(self):
+        num_of_tokens = 3
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(30, 50, 30, 50)
 
@@ -37,16 +38,6 @@ class UserLoggedIn(QDialog):
         username_box.addWidget(user_name_label)
         username_box.addWidget(user_name)
 
-        recovery_token_box = QHBoxLayout()
-        recovery_token_box.setSpacing(20)
-        request_tokens_button = QPushButton("Recovery tokens")
-        request_tokens_button.setMaximumSize(140, 50)
-        token_label = QLabel("Recovery tokens")
-        recovery_token_box.addWidget(token_label)
-        recovery_token_box.addWidget(request_tokens_button)
-        token_info = QLabel()
-        token_info.setText("Number of recovery tokes left is 3")
-
         password_box= QHBoxLayout()
         password_box.setSpacing(20)
         change_pass_button = QPushButton("Change password")
@@ -68,14 +59,12 @@ class UserLoggedIn(QDialog):
         label_layout.addItem(password_box)
         label_layout.addWidget(password_info)
         label_layout.addRow(divider2)
-        label_layout.addItem(recovery_token_box)
-        label_layout.addWidget(token_info)
-        label_layout.addRow(divider3)
         # Expand the info text to take available space
 
         log_out_button = QPushButton("Log out")
-        log_out_button.clicked.connect(self.logout_button_clicked())
+        log_out_button.clicked.connect(self.logout_button_clicked)
         cancel_button = QPushButton("Cancel")
+        cancel_button.clicked.connect(self.cancel_button_clicked)
         button_box = QHBoxLayout()
         button_box.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
         button_box.setSpacing(40)
