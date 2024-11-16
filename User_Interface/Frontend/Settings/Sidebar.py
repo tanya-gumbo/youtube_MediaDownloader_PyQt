@@ -1,11 +1,12 @@
 import os
 import User_Interface.Frontend.Settings.JSON_file_methods as jsn
-from PyQt6.QtCore import Qt, QSize, QDir, QMessageLogger
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy, QErrorMessage, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSizePolicy, QMessageBox
 from User_Interface.Frontend.Settings.DashboardWindow import DashboardWindow
 from User_Interface.Frontend.Settings.SettingsWindow import SettingsWindow
 from User_Interface.Frontend.Settings.UserProfile import UserProfile
+from User_Interface.Frontend.Settings.user_logged_in_window import UserLoggedIn
 
 
 class SideBar(QWidget):
@@ -53,7 +54,7 @@ class SideBar(QWidget):
 
         self.user_profile_button = QPushButton()
         user_profile_tool_tip = "Opens the user profile for sign in or sign out"
-        self.user_profile_button.setToolTip(dashboard_tool_tip)
+        self.user_profile_button.setToolTip(user_profile_tool_tip)
         self.user_profile_button.clicked.connect(self.user_profile_button_clicked)
         self.user_profile_button.setIcon(QIcon("User_Interface/Frontend/Settings/images/user_profile.png"))
         self.user_profile_button.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
@@ -95,5 +96,10 @@ class SideBar(QWidget):
             print("The exception in dash", e)
 
     def user_profile_button_clicked(self):
-        user_profile = UserProfile()
-        user_profile.exec()
+        user_status = jsn.read_json_status()
+        if user_status == "logged out":
+            user_profile = UserProfile()
+            user_profile.exec()
+        else:
+            logged_in_window = UserLoggedIn()
+            logged_in_window.exec()
