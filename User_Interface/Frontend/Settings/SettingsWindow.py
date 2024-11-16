@@ -95,4 +95,4 @@ class SettingsWindow(QDialog):
         default_path = jsn.read_json_file_path()
         folder_path = QFileDialog.getExistingDirectory(self, directory=default_path)
         if folder_path:
-            self.download_path.setText(f'Selected Path: {folder_path}')
+            self.download_path.setText(f'{folder_path}')
